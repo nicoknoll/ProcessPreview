@@ -1,0 +1,83 @@
+<?php
+
+/**
+ * ProcessPreview
+ *
+ * By Nico Knoll (http://www.nico-knoll.de/)
+ *
+ */
+
+class ProcessPreview extends Process implements Module {
+
+	public static function getModuleInfo() {
+		return array(
+			'title' => 'Preview', 
+			'version' => '1.02', 
+			'summary' => 'Let you see a preview of a page.',
+			'autoload' => true
+		);
+	}
+
+	public function init() {
+		parent::init();
+		$this->addHook('ProcessPageEdit::buildForm', $this, 'addButton');
+		$this->addHook('ProcessPageEdit::execute', $this, 'addButtonJavascript');
+	}
+	
+
+	public function addButton(HookEvent $event) {
+		$this->config->styles->add($this->config->urls->ProcessPreview.'ProcessPreview.css');
+		
+		$field = $this->modules->get('InputfieldSubmit');
+		$field->attr('id+name', 'preview'); 
+		$field->attr('class', $field->class); 
+		$field->attr('value', 'Preview'); 
+
+		$event->return = $event->return->append($field); 
+		
+	}
+
+	public function addButtonJavascript(HookEvent $event) {
+		$js = '<script type="text/javascript">
+		var preview = false;
+		$("#wrap_preview").click(function() {
+			preview = true;
+		});
+
+		$("#ProcessPageEdit").submit(function() {
+			if(preview == true) {
+				window.open("'.$this->config->urls->root.'preview.php?" + $(this).serialize(), "preview");
+				preview = false;
+				return false;
+			}
+		});
+		</script>';
+		$event->return = $event->return.$js;
+	}
+
+	public function ___install() {
+
+		if(ProcessWire::versionMajor == 2 && ProcessWire::versionMinor < 1) {
+			throw new WireException("This module requires ProcessWire 2.1 or newer"); 
+		}
+
+		if(copy($this->config->paths->ProcessPreview.'preview.php', $this->config->paths->root.'preview.php')) {
+			$this->message("Installed to ".$this->config->urls->root."preview.php"); 
+		} else {
+			$this->message("Installed but to make this module work right, please copy '".$this->config->urls->ProcessPreview."preview.php' into '".$this->config->urls->root."'"); 
+		}
+	}
+
+	public function ___uninstall() {
+		if(file_exists($this->config->paths->root.'preview.php')) {
+			if(unlink($this->config->paths->root.'preview.php')) {
+				$this->message("Removed ".$this->config->urls->root.'preview.php');
+			} else {
+				$this->message("Please remove ".$this->config->urls->root.'preview.php to complete the uninstall');
+			}
+		}
+
+	}
+
+
+}
