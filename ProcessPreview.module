@@ -12,7 +12,7 @@ class ProcessPreview extends Process implements Module {
 	public static function getModuleInfo() {
 		return array(
 			'title' => 'Preview', 
-			'version' => '1.02', 
+			'version' => '1.01', 
 			'summary' => 'Let you see a preview of a page.',
 			'autoload' => true
 		);
