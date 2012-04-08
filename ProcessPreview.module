@@ -12,7 +12,7 @@ class ProcessPreview extends Process implements Module {
 	public static function getModuleInfo() {
 		return array(
 			'title' => 'Preview', 
-			'version' => '2.00', 
+			'version' => '2.01', 
 			'summary' => 'Let you see a preview of a page.',
 			'singular' => true, 
 			'autoload' => true 
@@ -27,10 +27,11 @@ class ProcessPreview extends Process implements Module {
 	}
 	
 	
-	public function changeView(HookEvent $event) {		
-		if($this->page->template != 'admin' && wire('user')->isLoggedin() && $_POST) {
-			$page = $this->page;
-			unset($_POST['preview_save'], $_POST['name'], $_POST['parent_id'], $_POST['status']);
+	public function changeView(HookEvent $event) {
+		$page = $this->pages->get($_POST['id']);
+		if($page->template != 'admin' && wire('user')->isLoggedin() && $_POST) {
+			
+			unset($_POST['preview_save'], $_POST['parent_id'], $_POST['status']);
 			
 			foreach($_POST as $key => $value) {
 				$page->setFieldValue($key, $value);
@@ -61,7 +62,7 @@ class ProcessPreview extends Process implements Module {
 		$("#wrap_preview").click(function() {
 			preview = true;
 		});
-
+		
 		$("#ProcessPageEdit").submit(function() {
 			if(preview == true) {
 				$.ajax({
@@ -69,17 +70,20 @@ class ProcessPreview extends Process implements Module {
 				  url: "'.$page->url.'",
 				  data: $(this).serialize(),
 				  success: function(data){
-					var win = window.open("about:blank");
+					var win = window.open("about:blank", "Preview");
 					with(win.document) {
 					  open();
 					  write(data);
 					  close();
 					}
+					preview = false;
+					$("#preview").removeClass("ui-state-active");
 				  }
 				});
 				return false;
 			}
 		});
+		
 		
 
 		</script>';
