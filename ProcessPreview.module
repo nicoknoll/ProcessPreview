@@ -12,7 +12,7 @@ class ProcessPreview extends Process implements Module {
 	public static function getModuleInfo() {
 		return array(
 			'title' => 'Preview', 
-			'version' => '2.04', 
+			'version' => '2.05', 
 			'summary' => 'Let you see a preview of a page.',
 			'singular' => true, 
 			'autoload' => true 
@@ -68,9 +68,10 @@ class ProcessPreview extends Process implements Module {
 
 		$("#ProcessPageEdit").submit(function() {
 			if(preview == true) {
-				tinyMCE.triggerSave();
+				if(tinyMCE) {
+					tinyMCE.triggerSave();
+				}
 				var ser = $(this).serialize();
-				alert(ser);
 				$.post("'.$page->url.'", ser,
 					function(data) {
 						var win = window.open("about:blank", "Preview");
