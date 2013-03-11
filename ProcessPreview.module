@@ -12,7 +12,7 @@ class ProcessPreview extends Process implements Module {
 	public static function getModuleInfo() {
 		return array(
 			'title' => 'Preview', 
-			'version' => '2.05', 
+			'version' => '2.06', 
 			'summary' => 'Let you see a preview of a page.',
 			'singular' => true, 
 			'autoload' => true 
@@ -28,11 +28,11 @@ class ProcessPreview extends Process implements Module {
 
 
 	public function changeView(HookEvent $event) {
-		$page = $this->pages->get((int) $_POST['id']);
+		$page = $this->pages->get((int) $this->input->post->id);
 
 		if(!($page instanceof NullPage)) {
 			if(!$page->editable()) return;
-			foreach($_POST as $key => $value) {
+			foreach($this->input->post as $key => $value) {
 				if($page->fields->has($key)) $page->setFieldValue($key, $value);
 			}
 			$page->status = Page::statusOn;
@@ -59,7 +59,7 @@ class ProcessPreview extends Process implements Module {
 	}
 
 	public function addButtonJavascript(HookEvent $event) {
-		$page = $this->pages->get($_GET['id']);
+		$page = $this->pages->get($this->input->get->id);
 		$js = '<script type="text/javascript">
 		var preview = false;
 		$("#wrap_preview").click(function() {
