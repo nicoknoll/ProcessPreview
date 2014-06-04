@@ -89,9 +89,23 @@ class ProcessPreview extends Process implements Module {
 		$field->attr('class', $field->class);
 		$field->attr('target', '_blank');
 		$field->attr('value', $this->_('Preview')); 
+		
+		// little hacking to add the preview link as link and not as button
+		$href = $this->pages->get($this->input->get->id)->url.'?preview=true';
+		$wrapper = $this->modules->get('InputfieldMarkup');
+		$wrapper->attr('id+name', 'previewMarkupWrapper');
+		$wrapper->attr('value', '</div></li>
+		<li class="Inputfield InputfieldPreview Inputfield_previewButton InputfieldColumnWidthFirst" id="wrap_previewButton">
+			<div class="InputfieldContent">
+
+				<a href="'.$href.'" class="ui-button ui-widget ui-corner-all head_button_clone ui-state-default" id="previewButton" target="_blank">
+					<span class="ui-button-text">'.$this->_('Preview').'</span>
+				</a>
+			
+		');
 
 		// ... and add it to the form
-		$event->return = $event->return->append($field); 
+		$event->return = $event->return->append($wrapper); 
 	}
 
 

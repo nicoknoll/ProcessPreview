@@ -24,7 +24,7 @@ $(document).ready(function(){
 	$("#previewButton").click(function() {
 		preview = true;
 
-		event.preventDefault();
+		//event.preventDefault();
 
 		if(preview == true) {
 			if(typeof tinyMCE != "undefined") {
@@ -33,7 +33,6 @@ $(document).ready(function(){
 			
 			// get the fields changed data
 			var serializedFields = $('#ProcessPageEdit').serialize();
-			console.log(serializedFields);
 			
 			// generate the ajax url (same page with param)
 			var id = $.getUrlVar('id');
@@ -45,11 +44,13 @@ $(document).ready(function(){
 					preview = false;
 					$("#previewButton").removeClass("ui-state-active");
 					
-					if(previewPageURL != 'false')
-					var win = window.open(previewPageURL);
+					//if(previewPageURL != 'false')
+					//var win = window.open(previewPageURL);
 				}
 			);
 			//return false;
 		}
 	});
+	
+	//console.log($("#previewButton").trigger('click'));
 });
