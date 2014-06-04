@@ -5,7 +5,7 @@ ProcessPreview
 
 This module adds a "preview" button to a page your editing. After clicking it a preview of the changes will appear and a new window/tab.
 
-!()[http://projects.nico.is/processwire/ProcessPreview/screenshot1.jpg]
+![http://projects.nico.is/processwire/ProcessPreview/screenshot1.jpg]()
 
 ## Version 2.5
 
