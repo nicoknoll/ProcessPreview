@@ -1,7 +1,7 @@
 ProcessPreview
 ==============
 
-*This module is sponsored by Ole*
+*This module is sponsored by Ole.*
 
 After a long time I got the chance to start fixing bugs and improve the module.
 
