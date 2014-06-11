@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	
+
 	// extend jquery to get URL parameters
 	$.extend({
 	  getUrlVars: function(){
@@ -17,8 +17,8 @@ $(document).ready(function(){
 		return $.getUrlVars()[name];
 	  }
 	});
-	
-	
+
+
 	// prevent clicking multiple times while loading and waiting for ajax response
 	var preview = false;
 	$("#previewButton").click(function() {
@@ -27,23 +27,31 @@ $(document).ready(function(){
 		//event.preventDefault();
 
 		if(preview == true) {
+			// tinyMCE Support
 			if(typeof tinyMCE != "undefined") {
 				tinyMCE.triggerSave();
 			}
-			
+
+			// CKEditor Support
+			if(typeof CKEDITOR != "undefined") {
+				$.each(CKEDITOR.instances, function(editorSelector, editor) {
+				  editor.updateElement();
+				});
+			}
+
 			// get the fields changed data
 			var serializedFields = $('#ProcessPageEdit').serialize();
-			
+
 			// generate the ajax url (same page with param)
 			var id = $.getUrlVar('id');
 			var url = '?id=' + id + '&ajax=true';
-			
+
 			// do the ajax call
 			$.post(url, serializedFields,
 				function(previewPageURL) {
 					preview = false;
 					$("#previewButton").removeClass("ui-state-active");
-					
+
 					//if(previewPageURL != 'false')
 					//var win = window.open(previewPageURL);
 				}
@@ -51,6 +59,6 @@ $(document).ready(function(){
 			//return false;
 		}
 	});
-	
+
 	//console.log($("#previewButton").trigger('click'));
 });
