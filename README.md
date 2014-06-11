@@ -1,7 +1,7 @@
 ProcessPreview
 ==============
 
-*The ProcessWire module "ProcessPreview" is sponsored by Ole.*
+*The ProcessWire module "ProcessPreview" is sponsored by dreizunull.com.*
 
 This module adds a "preview" button to a page your editing. After clicking it a preview of the changes will appear and a new window/tab.
 
