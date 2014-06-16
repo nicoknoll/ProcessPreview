@@ -1,5 +1,6 @@
 #wrap_previewButton {
-display:inline-block;
+	display:inline-block;
+	background:transparent;
 }
 
 #wrap_previewButton > div {
